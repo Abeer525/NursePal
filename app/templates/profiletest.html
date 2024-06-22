@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR Profile</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Font Awesome CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <style></style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row profile-header">
+        <div class="col-12">
+          <h1>HR Profile</h1>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+          <img
+            id="profileImage"
+            class="profile-image img-fluid rounded-circle"
+            src="https://bootdey.com/img/Content/avatar/avatar7.png"
+            alt="HR Image"
+          />
+        </div>
+      </div>
+      <div class="container">
+        <div class="row profile-info justify-content-center">
+          <div class="col-md-8">
+            <p id="fullName">
+              <ion-icon name="user-md"></ion-icon> <strong>Full Name:</strong>
+            </p>
+            <p id="customId">
+              <ion-icon name="id-badge"></ion-icon> <strong>Custom ID:</strong>
+            </p>
+            <p id="email">
+              <ion-icon name="envelope"></ion-icon> <strong>Email:</strong>
+            </p>
+            <p id="phoneNumber">
+              <ion-icon name="phone"></ion-icon> <strong>Phone Number:</strong>
+            </p>
+            <p id="department">
+              <ion-icon name="building"></ion-icon> <strong>Department:</strong>
+            </p>
+            <p id="gender">
+              <ion-icon name="medkit-outline"></ion-icon>
+              <strong>Gender:</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row profile-actions justify-content-center">
+        <div class="col-md-8 text-center">
+          <button class="btn btn-primary" onclick="openProfileUpdateModal()">
+            Update Profile
+          </button>
+          <button class="btn btn-primary" onclick="openPasswordChangeModal()">
+            Change Password
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Profile Modal -->
+    <div
+      class="modal fade"
+      id="updateProfileModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="updateProfileModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateProfileModalLabel">
+              Update Profile
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="updateProfileForm">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateFullName"
+                  placeholder="Full Name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="updateEmail"
+                  placeholder="Email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updatePhoneNumber"
+                  placeholder="Phone Number"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateDepartment"
+                  placeholder="Department"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateGender"
+                  placeholder="Gender"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Update Profile
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Change Modal -->
+    <div
+      class="modal fade"
+      id="passwordChangeModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="passwordChangeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="passwordChangeModalLabel">
+              Change Password
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="passwordChangeForm">
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="currentPassword"
+                  placeholder="Current Password"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newPassword"
+                  placeholder="New Password"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                  placeholder="Confirm New Password"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Update Password
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ionicons -->
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../static\js\main.js"></script>
+    <script src="../static\js\profile.js"></script>
+    <script src="../static\js\home.js"></script>
+    
+</html>

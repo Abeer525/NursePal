@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-vZmK/xOyxNFV47bN0Ey3H5Z3AA7GzCW1+KM6Sii+UXe7v2Vq4x2la6jbl8jo8gp4" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Register HR Admin</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        label i {
+            margin-right: 8px; /* Add spacing after icons */
+            color: #38d39f; /* Change icon color */
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        input[type="file"] {
+            width: calc(100% - 24px); /* Adjusted width */
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .gender-radio {
+            margin-bottom: 16px;
+        }
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            background-color: #32be8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            transition: .5s;
+        }
+        input[type="submit"]:hover {
+            background-color: #38d39f;
+        }
+        #responseMessage {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1><i class="fas fa-user-plus"></i> Register HR Admin</h1>
+        <form id="registerForm" enctype="multipart/form-data">
+            <label for="fullName"><i class="fas fa-user"></i> Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phoneNumber"><i class="fas fa-phone"></i> Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required>
+
+            <label for="department"><i class="fas fa-building"></i> Department:</label>
+            <select id="department" name="department" required>
+                <option value="">Select a department</option>
+                <option value="Human Resources">Human Resources</option>
+                <option value="Finance">Finance</option>
+                <option value="Operations">Operations</option>
+                <option value="IT">IT</option>
+                <option value="Marketing">Marketing</option>
+            </select>
+
+            <!-- Gender Radio Buttons -->
+            <label><i class="fas fa-venus-mars"></i> Gender:</label>
+            <div>
+                <label><input type="radio" name="gender" value="Male" required> Male</label>
+                <label><input type="radio" name="gender" value="Female" required> Female</label>
+            </div>
+
+            <label for="image"><i class="fas fa-image"></i> Profile Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <input type="submit" value="Register">
+        </form>
+
+        <p id="responseMessage"></p>
+    </div>
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('fullName', document.getElementById('fullName').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('phoneNumber', document.getElementById('phoneNumber').value);
+            formData.append('department', document.getElementById('department').value);
+            formData.append('gender', document.querySelector('input[name="gender"]:checked').value);
+            formData.append('image', document.getElementById('image').files[0]);
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/register_hr', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const responseData = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('responseMessage').textContent = ` HR registered successfully!`;
+                    document.getElementById('responseMessage').style.color = '#32be8f';
+                } else {
+                    document.getElementById('responseMessage').textContent = `<i class="fas fa-exclamation-circle"></i> Error: ${responseData.error}`;
+                    document.getElementById('responseMessage').style.color = 'red';
+                }
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = `<i class="fas fa-exclamation-circle"></i> Error: ${error.message}`;
+                document.getElementById('responseMessage').style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>

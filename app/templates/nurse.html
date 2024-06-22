@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nurses List</title>
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/Pstyle.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      :root {
+          --green: #38d39f;
+          --blue: #2a2185;
+          --white: #fff;
+          --gray: #f5f5f5;
+          --black1: #222;
+          --black2: #999;
+        }
+     
+      .navigation {
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+      }
+      .main {
+          flex: 1;
+          width: 100%;
+      }
+     
+      .topbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+  
+
+      .profile {
+          display: flex;
+          align-items: center;
+      }
+      .profile .data {
+          margin-right: 15px;
+      }
+      .profile .user img {
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+      }
+      @media (min-width: 768px) {
+          .container {
+              flex-direction: row;
+          }
+          .navigation {
+              width: 20%;
+              flex-direction: column;
+          }
+          .main {
+              width: 80%;
+          }
+      }
+      .loading {
+          display: none;
+      }
+
+      /* Search Results Popup */
+      .search-popup {
+          position: fixed;
+          top: 45%;
+          left: 56%;
+          transform: translate(-50%, -50%);
+          background-color: var(--white);
+          border: 1px   transparent;
+          border-radius: 8px;
+          width:29%;
+          z-index: 1000;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          max-height: 80%;
+          overflow-y: auto;
+      }
+
+      /* Close button for the popup */
+      .close-btn {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          color:var(--green--);
+      }
+
+      /* Style for category headers */
+      .search-popup h3 {
+          margin-top: 15px;
+          color:var(--green);
+          background-color:var(--white--);
+          text-align: left;
+      }
+
+      /* Style for each result item */
+      .search-popup .result-item {
+          margin-top: 10px;
+          padding: 10px;
+          background-color: #f9f9f9;
+          border-radius: 6px;
+      }
+
+      /* Hover effect for result items */
+      .search-popup .result-item:hover {
+          background-color: #eaeaea;
+      }
+  </style> 
+</head>
+<body>
+  <!-- =============== Navigation ================ -->
+  <div class="container">
+    <div class="navigation">
+        <ul>
+            <li>
+                <a href="index_one.html">
+                    <span class="icon">
+                        <ion-icon name="pulse"></ion-icon>
+                    </span>
+                    <span class="title">NursePal</span>
+                </a>
+            </li>
+            <li>
+                <a href="index_one.html" id="profileLink">
+                    <span class="icon">
+                        <ion-icon name="home-outline"></ion-icon>
+                    </span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="profile.html" id="profileLink">
+                    <span class="icon">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+
+                    </span>
+                    <span class="title">Hr Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="patient.html">
+                    <span class="icon">
+                        <ion-icon name="bandage-outline"></ion-icon>
+                    </span>
+                    <span class="title">Patients</a>
+            </li>
+            <li>
+                <a href="nurse.html">
+                    <span class="icon">
+                        <ion-icon name="medkit-outline"></ion-icon>
+                    </span>
+                    <span class="title">Nurses</span>
+                </a>
+            </li>
+            <li>
+                <a href="nurse_register.html">
+                    <span class="icon">
+                        <ion-icon name="person-add-outline"></ion-icon>
+                    </span>
+                    <span class="title">Nurses Register</span>
+                </a>
+            </li>
+            <li>
+                <a href="login.html" id="logout">
+                    <span class="icon">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </span>
+                    <span class="title">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+      <!-- ========================= Main ==================== -->
+      <div class="main">
+          <div class="topbar">
+              <div class="toggle">
+                  <ion-icon name="menu-outline"></ion-icon>
+              </div>
+              <div class="search">
+                  <label>
+                      <input type="text" id="searchInput" placeholder="Search here" aria-label="Search">
+                      <ion-icon name="search-outline" id="searchButton" aria-label="Search button"></ion-icon>
+                  </label>
+              </div>
+              <div id="profile" class="profile">
+                  <div class="data">
+                      <p id="fullName"></p>
+                  </div>
+                  <div class="user">
+                      <img id="profileImage" src="../static/imgs/downloads.jpg" alt="HR Profile Image">
+                  </div>
+              </div>
+              <p id="error"></p>
+          </div>
+
+          <!-- Search Results -->
+          <div class="loading" id="loading">Loading...</div>
+      
+  
+
+
+
+      
+          <!-- main end -->
+
+
+          <!-- Search Results -->
+           <div id="searchResults"></div>
+          <div class="search-popup" id="searchPopup"></div>
+          <div class="loading" id="loading">Loading...</div> 
+
+    <h1>Nurses List</h1>
+    <div class="container_one" id="nursesContainer">
+      <!-- Nurse cards will be dynamically added here -->
+    </div>
+
+    <div id="updateModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Update Nurse</h2>
+        <form id="updateForm">
+          <input type="hidden" id="customId" />
+          <label for="fullName">Full Name:</label>
+          <input type="text" id="fullName" name="fullName" /><br />
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" /><br />
+          <label for="phoneNumber">Phone Number:</label>
+          <input type="text" id="phoneNumber" name="phoneNumber" /><br />
+          <label for="nursingType">Nursing Type:</label>
+          <select id="nursingType" name="nursingType">
+            <option value="">Select a nursing type</option>
+            <option value="General">General</option>
+            <option value="Pediatric">Pediatric</option>
+            <option value="Surgical">Surgical</option>
+            <option value="ICU">ICU</option></select
+          ><br />
+          <label for="dateOfBirth">Date of Birth:</label>
+          <input type="date" id="dateOfBirth" name="dateOfBirth" /><br />
+          <button type="submit">Confirm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../static\js\main.js"></script>
+  <script src="../static\js\search.js"></script>
+  <script src="../static\js\home.js"></script>
+  <script src="../static\js\nurse.js"></script>
+    <script>
+     
+    </script>
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

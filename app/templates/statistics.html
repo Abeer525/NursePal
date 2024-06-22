@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Statistics</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Daily Patient Registrations</h1>
+      <div id="chartContainer">
+        <!-- Chart will be displayed here -->
+        <img id="patientChart" src="" alt="Patient Statistics Chart" />
+      </div>
+    </div>
+
+    <script>
+      // JavaScript to update the chart image source
+      document.addEventListener("DOMContentLoaded", async () => {
+        const response = await fetch("http://127.0.0.1:5000/generate_chart");
+        const imageUrl = await response.text();
+        document.getElementById("patientChart").src = imageUrl;
+      });
+    </script>
+  </body>
+</html>

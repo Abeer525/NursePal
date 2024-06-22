@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Panel</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+     <style>
+      :root {
+        --green: #38d39f;
+        --blue: #2a2185;
+        --white: #fff;
+        --gray: #f5f5f5;
+        --black1: #222;
+        --black2: #999;
+      }
+      * {
+        font-family: "Ubuntu", sans-serif;!important
+        margin: 0;!important
+        padding: 0;!important
+        box-sizing: border-box;!important
+      }
+      body {
+        min-height: 100vh;!important
+        overflow-x: hidden;!important
+      width:100%; !important
+      margin: 0; !important
+      padding: 0; !important
+      width: 100%;!important;
+
+      }
+      .container {
+        position: relative;
+        width: 100%;
+      
+      }
+        .loading {
+            display: none;
+        }
+        #profileModal {
+            position: fixed;
+            top: 0;
+            right: -400px; /* Initially positioned off-screen to the right */
+            width: 400px;
+            height: 100%;
+            background-color: #fff;
+            z-index: 999;
+            transition: right 0.3s ease;
+        }
+        /* HR Profile Styling */
+        .container-two {
+          
+            width: 100%;!important;
+         
+        }
+        
+        .profile-header {
+            text-align: center;
+        }
+        
+        .profile-image {
+            margin-top: 20px;
+        }
+        
+        .profile-info {
+            margin-top: 20px;
+        }
+        
+        .profile-info-item {
+            margin-bottom: 10px;
+        }
+        
+        .profile-actions {
+            margin-top: 20px;
+        }
+        
+        .full-name {
+            font-weight: bold;
+        }
+        
+        /* Update Profile Modal Styling */
+        .modal {
+            display: none;
+        }
+        
+        /* Password Change Modal Styling */
+        .modal-dialog {
+            max-width: 500px; /* Adjust modal width as needed */
+        }
+        
+      .fname {
+        display: flex;
+        flex-direction:row; /* Stack items vertically */
+    }
+    .navigation {
+      position: fixed;!important
+     
+      height: 100%;!important
+      
+      top: 0; /* Adjust top position if needed */
+      left: 0; /* Adjust left position if needed */
+      background: var(--green);!important
+      border-left: 10px solid var(--green);!important
+      transition: 0.5s;!important
+      overflow: hidden;!important
+    }
+    
+    
+    .navigation.active {
+      width: 80px;!important
+    }
+    
+    .navigation ul {
+      position: absolute;!important
+      top: 0;!important
+      left: 0;!important
+      width: 100%;!important
+    }
+    
+    .navigation ul li {
+      position: relative;!important
+      width: 100%;!important
+      list-style: none;!important
+      border-top-left-radius: 30px;!important
+      border-bottom-left-radius: 30px;!important
+    }
+    
+    .navigation ul li:hover,
+    .navigation ul li.hovered {
+      background-color: var(--white);!important
+    }
+    
+    .navigation ul li:nth-child(1) {
+      margin-bottom: 40px;!important
+      pointer-events: none;!important
+    }
+    
+    .navigation ul li a {
+      position: relative;!important
+      display: block;!important
+      width: 100%;!important
+      display: flex;!important
+      text-decoration: none;!important
+      color: var(--white);!important
+    }
+    .navigation ul li:hover a,
+    .navigation ul li.hovered a {
+      color: var(--green);!important
+    }
+    
+    .navigation ul li a .icon {
+      position: relative;!important
+      display: block;!important
+      min-width: 60px;!important
+      height: 60px;!important
+      line-height: 75px;!important
+      text-align: center;!important
+    }
+    .navigation ul li a .icon ion-icon {
+      font-size: 1.75rem;!important
+    }
+    
+    .navigation ul li a .title {
+      position: relative;!important
+      display: block;!important
+      padding: 0 10px;!important
+      height: 60px;!important
+      line-height: 60px;!important
+      text-align: start;!important
+      white-space: nowrap;!important
+    }
+    
+    /* --------- curve outside ---------- */
+    .navigation ul li:hover a::before,
+    .navigation ul li.hovered a::before {
+      content: "";!important
+      position: absolute;!important
+      right: 0;!important
+      top: -50px;!important
+      width: 50px;!important
+      height: 50px;!important
+      background-color: transparent;!important
+      border-radius: 50%;!important
+      box-shadow: 35px 35px 0 10px var(--white);!important
+      pointer-events: none;!important
+    }
+    .navigation ul li:hover a::after,
+    .navigation ul li.hovered a::after {
+      content: "";!important
+      position: absolute;!important
+      right: 0;!important
+      bottom: -50px;!important
+      width: 50px;!important
+      height: 50px;!important
+      background-color: transparent;!important
+      border-radius: 50%;!important
+      box-shadow: 35px -35px 0 10px var(--white);!important
+      pointer-events: none;!important
+    }
+    
+    .profile-header {
+      color: var(--blue);
+      font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+  .profile-image {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid var(--green);
+  }
+  .profile-info-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: var(--white);
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+  .profile-info-item ion-icon {
+      color: var(--green);
+      margin-right: 10px;
+      font-size: 1.2em;
+  }
+  .profile-info-item p {
+      margin: 0;
+  }
+  .profile-info-item strong {
+      display: block;
+      color: var(--black1);
+  }
+  .profile-info-item span {
+      color: var(--black2);
+  }
+  .profile-actions {
+      margin-top: 20px;
+      text-align: center;
+  }
+  .btn-primary {
+      background-color: var(--green);
+      border-color: var(--green);
+      margin: 0 10px;
+  }
+  .btn-primary:hover {
+      background-color: darken(var(--green), 10%);
+  }
+  .card {
+      padding: 20px;
+      border-radius: 15px;
+      background-color: var(--white);
+      border: none;
+  }
+  .container {
+      max-width: 900px;
+      margin: auto;
+  }
+  .profile-info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info-item .d-flex {
+    flex-direction: row;
+    align-items: center;
+}
+.container--fluid {
+    padding: 0; /* Remove padding */
+    margin: 0 auto; /* Center content horizontally */
+}
+.profile-header{
+  color:var(--green);
+}
+    </style> 
+</head>
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="index_one.html">
+                        <span class="icon">
+                            <ion-icon name="pulse"></ion-icon>
+                        </span>
+                        <span class="title">NursePal</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index_one.html" id="profileLink">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="profile.html" id="profileLink">
+                        <span class="icon">
+                            <ion-icon name="person-circle-outline"></ion-icon>
+
+                        </span>
+                        <span class="title">Hr Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="patient.html">
+                        <span class="icon">
+                            <ion-icon name="bandage-outline"></ion-icon>
+                        </span>
+                        <span class="title">Patients</a>
+                </li>
+                <li>
+                    <a href="nurse.html">
+                        <span class="icon">
+                            <ion-icon name="medkit-outline"></ion-icon>
+                        </span>
+                        <span class="title">Nurses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="nurse_register.html">
+                        <span class="icon">
+                            <ion-icon name="person-add-outline"></ion-icon>
+                        </span>
+                        <span class="title">Nurses Register</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="login.html" id="logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+                <div class="search"  id="searchContainer">
+                    <label>
+                        <input type="text" id="searchInput" placeholder="Search here" aria-label="Search">
+                        <ion-icon name="search-outline" id="searchButton" aria-label="Search button"></ion-icon>
+                    </label>
+                </div>
+                <div class="loading" id="loading">Loading...</div>
+                <div class="search-popup" id="searchPopup"></div>
+                <div id="profile" class="profile" onclick="openHrProfilePopup()">
+                    <div class="data">
+                        <p id="fullName"></p>
+                    </div>
+                    <div class="user">
+                        <img id="profileImage" src="../static/uploads/downloads.jpg" alt="HR Profile Image">
+                    </div>
+                 </div>
+                <p id="error"></p>
+                
+            </div>
+
+
+            
+            <div class="container--fluid  mt-5">
+                <div class="card">
+                    <div class="card-header text-center bg-white">
+                        <h1 class="profile-header ">HR Profile</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="../static/uploads/downloads.jpg" class="img-fluid rounded-circle profile-image" id="profileImage" alt="HR Image">
+                        </div>
+                        <div class="profile-info">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="profile-info-item">
+                                        <ion-icon name="id-badge"></ion-icon>
+                                        <strong>Custom ID:</strong>
+                                        <span id="customId">12345</span>
+                                    </div>
+                                </div>
+                           
+                              <div class="col-md-6">
+                                <div class="profile-info-item">
+                                    <div class="d-flex align-items-center">
+                                     <!-- Using flexbox -->
+                                        <ion-icon name="person-outline">
+                                           </ion-icon> <br>
+                                       
+                                        <p class="ml-2">Full Name:</p>
+                                        
+                                    </div>
+                                    <p class="full-name mt-2"><span id="fullName">John Doe</span></p>
+                                </div>
+                            </div>
+                            
+                          </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="profile-info-item">
+                                        <ion-icon name="mail-outline"></ion-icon>
+                                        <strong>Email:</strong>
+                                        <span id="email">johndoe@example.com</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="profile-info-item">
+                                        <ion-icon name="call-outline"></ion-icon>
+                                        <strong>Phone Number:</strong>
+                                        <span id="phoneNumber">+1234567890</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="profile-info-item">
+                                        <ion-icon name="business-outline"></ion-icon>
+                                        <strong>Department:</strong>
+                                        <span id="department">Human Resources</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="profile-info-item">
+                                        <ion-icon name="male-female-outline"></ion-icon>
+                                        <strong>Gender:</strong>
+                                        <span id="gender">Male</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-actions text-center mt-4">
+                            <button class="btn btn-primary" onclick="openProfileUpdateModal()">Update Profile</button>
+                            <button class="btn btn-primary" onclick="openPasswordChangeModal()">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+          <!-- Update Profile Modal -->
+<div class="modal fade" id="updateProfileModal" tabindex="-1" role="dialog" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateProfileModalLabel">Update Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form for updating profile -->
+        <form id="updateProfileForm">
+          <div class="form-group">
+            <label for="updateFullName">Full Name</label>
+            <input type="text" class="form-control" id="updateFullName" placeholder="Enter Full Name" required>
+        </div>
+        <div class="form-group">
+            <label for="updateEmail">Email</label>
+            <input type="email" class="form-control" id="updateEmail" placeholder="Enter Email" required>
+        </div>
+        <div class="form-group">
+            <label for="updatePhoneNumber">Phone Number</label>
+            <input type="text" class="form-control" id="updatePhoneNumber" placeholder="Enter Phone Number" required>
+        </div>
+        <div class="form-group">
+            <label for="updateDepartment">Department</label>
+            <input type="text" class="form-control" id="updateDepartment" placeholder="Enter Department" required>
+        </div>
+        <div class="form-group">
+            <label for="updateGender">Gender</label>
+            <input type="text" class="form-control" id="updateGender" placeholder="Enter Gender" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Update Profile</button>
+   
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Password Change Modal -->
+<div class="modal fade" id="passwordChangeModal" tabindex="-1" role="dialog" aria-labelledby="passwordChangeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="passwordChangeModalLabel">Change Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form for changing password -->
+        <form id="passwordChangeForm">
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input type="password" class="form-control" id="currentPassword" placeholder="Enter Current Password" required>
+        </div>
+        <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" class="form-control" id="newPassword" placeholder="Enter New Password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm New Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Update Password</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+        
+            <!-- main end -->
+
+
+     
+          
+
+            
+       <!-- ================   <div id="searchResults"></div>
+            <div class="search-popup" id="searchPopup"></div>
+            <div class="loading" id="loading">Loading...</div> ================= -->
+           
+
+            
+       
+         
+
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <!-- Your scripts -->
+            <script src="../static\js\main.js"></script>
+            <script src="../static\js\profile.js"></script>
+            <script src="../static\js\home.js"></script>
+            <!-- ====== ionicons ======= -->
+            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                  // Assuming you fetch the data from an API or local storage
+                  const fullName = 'Abeer'; // Replace this with the actual data fetching logic
+                  document.getElementById('fullName').textContent = fullName;
+              });
+          </script>
+    
+</body>
+</html>

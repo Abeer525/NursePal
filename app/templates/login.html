@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/login.css" />
+    <title>HR Login</title>
+    <style>
+      /* Password and ID reveal on hover and hide when typing */
+    </style>
+  </head>
+  <body>
+    <img class="wave" src="../static/imgs/wave.png" alt="Wave Background" />
+    <div class="container">
+      <div class="img">
+        <img src="../static/imgs/bg.svg" alt="Image" />
+      </div>
+      <div class="login-content">
+        <form id="loginForm">
+          <img src="../static/imgs/avatar.svg" alt="Avatar" />
+          <h2 class="title">HR Login</h2>
+          <div class="input-div one">
+            <div class="i">
+              <i class="fas fa-user"></i>
+            </div>
+            <div>
+              <h5>Custom ID</h5>
+              <input type="text" id="customId" name="customId" class="input" />
+            </div>
+          </div>
+          <div class="input-div pass password-wrapper">
+            <div class="i">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div>
+              <h5>Password</h5>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="input"
+              />
+            </div>
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <p id="error"></p>
+        </form>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the form from submitting normally
+
+          var customId = document.getElementById("customId").value;
+          var password = document.getElementById("password").value;
+
+          // Send POST request to Flask API
+          fetch("http://127.0.0.1:5000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              customId: customId,
+              password: password,
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.hrId) {
+                // Store the customId in sessionStorage
+                sessionStorage.setItem("customId", data.hrId);
+                // Redirect to the main page
+                window.location.href = "index_one.html";
+              } else {
+                document.getElementById("error").innerText =
+                  "Login failed. Please check your credentials.";
+              }
+            })
+            .catch((error) => {
+              document.getElementById("error").innerText =
+                "Login failed. Please check your credentials.";
+              console.error(
+                "There was a problem with the login request:",
+                error
+              );
+            });
+        });
+
+      document.querySelectorAll(".input").forEach((input) => {
+        input.addEventListener("focus", function () {
+          this.parentNode.parentNode.classList.add("focus");
+        });
+
+        input.addEventListener("blur", function () {
+          if (this.value === "") {
+            this.parentNode.parentNode.classList.remove("focus");
+          }
+        });
+      });
+    </script>
+    <script src="app\static\js\main.js"></script>
+  </body>
+</html>

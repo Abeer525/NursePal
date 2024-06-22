@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Panel</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="../static/css/style.css">
+
+        
+        <style>
+            .loading {
+                display: none;
+            }
+            /* Position the profile modal off-screen initially */
+            .profile-modal {
+                position: fixed;
+                top: 0;
+                right: -400px; /* Adjust this value as needed */
+                width: 400px; /* Adjust the width as needed */
+                height: 100%;
+                background-color: white;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                transition: right 0.3s ease-in-out;
+                z-index: 1000;
+                overflow-y: auto;
+            }
+        
+    </style> 
+</head>
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="pulse"></ion-icon>
+                        </span>
+                        <span class="title">NursePal</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="profile.html" id="profileLink">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="patient.html">
+                        <span class="icon">
+                            <ion-icon name="bandage-outline"></ion-icon>
+                        </span>
+                        <span class="title">Patients</a>
+                </li>
+                <li>
+                    <a href="nurse.html">
+                        <span class="icon">
+                            <ion-icon name="medkit-outline"></ion-icon>
+                        </span>
+                        <span class="title">Nurses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="login.html" id="logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+                <div class="search"  id="searchContainer">
+                    <label>
+                        <input type="text" id="searchInput" placeholder="Search here" aria-label="Search">
+                        <ion-icon name="search-outline" id="searchButton" aria-label="Search button"></ion-icon>
+                    </label>
+                </div>
+                <div class="loading" id="loading">Loading...</div>
+                <div class="search-popup" id="searchPopup"></div>
+                <div id="profile" class="profile" onclick="openHrProfilePopup()">
+                    <div class="data">
+                        <p id="fullName"></p>
+                    </div>
+                    <div class="user">
+                        <img id="profileImage" src="../static/uploads/downloads.jpg" alt="HR Profile Image">
+                    </div>
+ 
+
+
+                    <button id="openProfileButton" onclick="openProfileModal()">Open Profile</button>
+                    <div id="profileModal" class="profile-modal">
+                        <div class="container">
+                            <div class="row profile-header">
+                              <div class="col-12">
+                                <h1>HR Profile</h1>
+                              </div>
+                            </div>
+                            <div class="row justify-content-center">
+                              <div class="col-md-4 text-center">
+                                <img
+                                  id="profileImage"
+                                  class="profile-image img-fluid rounded-circle"
+                                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                                  alt="HR Image"
+                                />
+                              </div>
+                            </div>
+                            <div class="container">
+                              <div class="row profile-info justify-content-center">
+                                <div class="col-md-8">
+                                  <p id="fullName">
+                                    <ion-icon name="user-md"></ion-icon> <strong>Full Name:</strong>
+                                  </p>
+                                  <p id="customId">
+                                    <ion-icon name="id-badge"></ion-icon> <strong>Custom ID:</strong>
+                                  </p>
+                                  <p id="email">
+                                    <ion-icon name="envelope"></ion-icon> <strong>Email:</strong>
+                                  </p>
+                                  <p id="phoneNumber">
+                                    <ion-icon name="phone"></ion-icon> <strong>Phone Number:</strong>
+                                  </p>
+                                  <p id="department">
+                                    <ion-icon name="building"></ion-icon> <strong>Department:</strong>
+                                  </p>
+                                  <p id="gender">
+                                    <ion-icon name="medkit-outline"></ion-icon>
+                                    <strong>Gender:</strong>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                      
+                            <div class="row profile-actions justify-content-center">
+                              <div class="col-md-8 text-center">
+                                <button class="btn btn-primary" onclick="openProfileUpdateModal()">
+                                  Update Profile
+                                </button>
+                                <button class="btn btn-primary" onclick="openPasswordChangeModal()">
+                                  Change Password
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                      
+                          <!-- Update Profile Modal -->
+                          <div
+                            class="modal fade"
+                            id="updateProfileModal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="updateProfileModalLabel"
+                            aria-hidden="true"
+                          >
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="updateProfileModalLabel">
+                                    Update Profile
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form id="updateProfileForm">
+                                    <div class="form-group">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="updateFullName"
+                                        placeholder="Full Name"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="email"
+                                        class="form-control"
+                                        id="updateEmail"
+                                        placeholder="Email"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="updatePhoneNumber"
+                                        placeholder="Phone Number"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="updateDepartment"
+                                        placeholder="Department"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="updateGender"
+                                        placeholder="Gender"
+                                        required
+                                      />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                      Update Profile
+                                    </button>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      
+                          <!-- Password Change Modal -->
+                          <div
+                            class="modal fade"
+                            id="passwordChangeModal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="passwordChangeModalLabel"
+                            aria-hidden="true"
+                          >
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="passwordChangeModalLabel">
+                                    Change Password
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form id="passwordChangeForm">
+                                    <div class="form-group">
+                                      <input
+                                        type="password"
+                                        class="form-control"
+                                        id="currentPassword"
+                                        placeholder="Current Password"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="password"
+                                        class="form-control"
+                                        id="newPassword"
+                                        placeholder="New Password"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="password"
+                                        class="form-control"
+                                        id="confirmPassword"
+                                        placeholder="Confirm New Password"
+                                        required
+                                      />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                      Update Password
+                                    </button>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+                       
+                    </div>
+        
+                    
+                    
+
+                </div>
+                
+
+
+
+                <p id="error"></p>
+            </div>
+
+
+
+        </div>
+    
+     <!-- Ionicons -->
+     <script type="module"src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+   <!-- Bootstrap JS and dependencies -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+        
+   
+ <script>    document.addEventListener("DOMContentLoaded", function () {
+    const errorElement = document.getElementById("error");
+    const fullName = document.getElementById("fullName");
+    const customIdElement = document.getElementById("customId");
+    const email = document.getElementById("email");
+    const phoneNumber = document.getElementById("phoneNumber");
+    const department = document.getElementById("department");
+    const gender = document.getElementById("gender");
+    const profileImage = document.getElementById("profileImage");
+
+    // Extract custom ID from sessionStorage
+    const customId = sessionStorage.getItem("customId");
+
+    if (!customId) {
+      errorElement.innerText = "Custom ID not found in session storage.";
+      return;
+    }
+
+    // Fetch and display HR profile details
+    fetch(`http://127.0.0.1:5000/profile/${customId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (
+          data.fullName &&
+          data.email &&
+          data.phoneNumber &&
+          data.department &&
+          data.gender &&
+          data.image
+        ) {
+          fullName.innerText += data.fullName;
+          customIdElement.innerText += customId;
+          email.innerText += data.email;
+          phoneNumber.innerText += data.phoneNumber;
+          department.innerText += data.department;
+          gender.innerText += data.gender;
+          profileImage.src = `/static/uploads/${data.image}`;
+        } else {
+          throw new Error("Invalid data format");
+        }
+      })
+      .catch((error) => {
+        errorElement.innerText =
+          "Failed to load profile. Please try again later.";
+        console.error(
+          "There was a problem with fetching HR profile:",
+          error
+        );
+      });
+  });
+
+  // Function to open the password change modal
+  function openPasswordChangeModal() {
+    $("#passwordChangeModal").modal("show");
+  }
+
+  // Event listener for password change form submission
+  document
+    .getElementById("passwordChangeForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const currentPassword =
+        document.getElementById("currentPassword").value;
+      const newPassword = document.getElementById("newPassword").value;
+      const confirmPassword =
+        document.getElementById("confirmPassword").value;
+      const customId = sessionStorage.getItem("customId");
+
+      if (newPassword !== confirmPassword) {
+        alert("New password and confirm password do not match.");
+        return;
+      }
+
+      const formData = {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      };
+
+      fetch(`http://127.0.0.1:5000/api/hr/change-password/${customId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message) {
+            $("#passwordChangeModal").modal("hide");
+            alert("Password updated successfully.");
+          } else {
+            alert("Failed to update password: " + data.error);
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating password:", error);
+        });
+    });
+
+  // Function to open the profile update modal
+  function openProfileUpdateModal() {
+    $("#updateProfileModal").modal("show");
+  }
+
+  // Event listener for profile update form submission
+  document
+    .getElementById("updateProfileForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const fullName = document.getElementById("updateFullName").value;
+      const email = document.getElementById("updateEmail").value;
+      const phoneNumber =
+        document.getElementById("updatePhoneNumber").value;
+      const department = document.getElementById("updateDepartment").value;
+      const gender = document.getElementById("updateGender").value;
+      const customId = sessionStorage.getItem("customId");
+
+      const formData = {
+        fullName: fullName,
+        email: email,
+        phoneNumber: phoneNumber,
+        department: department,
+        gender: gender,
+      };
+
+      fetch(`http://127.0.0.1:5000/api/hr/update/${customId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message) {
+            $("#updateProfileModal").modal("hide");
+            alert("Profile updated successfully.");
+          } else {
+            alert("Failed to update profile: " + data.error);
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating profile:", error);
+        });
+    });
+    function openProfileModal() {
+        $('#profileModal').animate({right: 0}, 300);
+    }
+
+    // Function to close the profile modal
+    function closeProfileModal() {
+        $('#profileModal').animate({right: '-400px'}, 300);
+    }
+
+    // Event listener for clicking on the profile image
+    document.getElementById('openProfileButton').addEventListener('click', function() {
+        openProfileModal();
+    });
+
+    // Function to load the content of the HR Profile page into the modal
+    $(document).ready(function() {
+        $.get('profile.html', function(data) {
+            $('#profileModal').html(data);
+        });
+    });
+</script>
+</body>
+</html>
+
+
+ 
